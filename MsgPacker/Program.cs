@@ -33,10 +33,15 @@ namespace MsgPacker
                     return;
                 }
 
+                string outpath;
                 if (args[0].EndsWith(".msg"))
                 {
                     Console.WriteLine("Converting MessagePack to JSON");
-                    string outpath = Directory.GetCurrentDirectory() + "\\" + Path.GetFileNameWithoutExtension(args[0]) + ".json";
+
+                    if (args.Length > 1)
+                        outpath = args[1];
+                    else
+                        outpath = Path.GetDirectoryName(args[0]) + "\\" + Path.GetFileNameWithoutExtension(args[0]) + ".json";
 
                     MessagePackReader reader = new MessagePackReader(File.ReadAllBytes(args[0]));
 
@@ -56,7 +61,12 @@ namespace MsgPacker
                 else if (args[0].EndsWith(".json"))
                 {
                     Console.WriteLine("Converting JSON to MessagePack");
-                    string outpath = Directory.GetCurrentDirectory() + "\\" + Path.GetFileNameWithoutExtension(args[0]) + ".msg";
+
+                    if (args.Length > 1)
+                        outpath = args[1];
+                    else
+                        outpath = Path.GetDirectoryName(args[0]) + "\\" + Path.GetFileNameWithoutExtension(args[0]) + ".msg";
+
                     if (File.Exists(outpath))
                         File.Delete(outpath);
 
